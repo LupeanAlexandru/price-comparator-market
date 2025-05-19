@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface ProductPriceRepository extends JpaRepository<ProductPrice, Long> {
-    List<ProductPrice> findByProductAndStorePriceDate(Product product, Store store, LocalDate priceDate);
+    List<ProductPrice> findByProductAndStoreAndPriceDate(Product product, Store store, LocalDate priceDate);
     List<ProductPrice> findByStoreAndPriceDate(Store store, LocalDate priceDate);
     List<ProductPrice> findByPriceDate(LocalDate priceDate);
 }
