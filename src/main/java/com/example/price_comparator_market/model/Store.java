@@ -1,20 +1,21 @@
 package com.example.price_comparator_market.model;
 
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "stores")
+@Table
 public class Store {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
+    private List<Product> products;
 }

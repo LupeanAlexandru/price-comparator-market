@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,12 +17,22 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    private String product_id;
 
-    @Column(nullable = false)
-    private String category;
+    private String product_name;
 
-    @Column
+    private String product_category;
+
     private String brand;
+
+    private BigDecimal package_quantity;
+
+    private String package_unit;
+
+    private BigDecimal price;
+
+    private Currency currency;
+
+    @ManyToOne(optional = false)
+    private Store store;
 }
