@@ -16,7 +16,6 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        // Create stores
        List<String> csvFiles = List.of(
                "lidl_2025-05-08.csv",
                "kaufland_2025-05-08.csv",
