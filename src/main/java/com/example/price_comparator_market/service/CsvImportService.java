@@ -1,7 +1,6 @@
 package com.example.price_comparator_market.service;
 
-import com.example.price_comparator_market.dto.ProductDTO;
-import com.example.price_comparator_market.exception.BusinessException;
+import com.example.price_comparator_market.exception.CsvImportException;
 import com.example.price_comparator_market.model.Currency;
 import com.example.price_comparator_market.model.Product;
 import com.example.price_comparator_market.model.Store;
@@ -18,8 +17,6 @@ import java.io.Reader;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -43,10 +40,9 @@ public class CsvImportService {
      * Throws a {@code BusinessException} if there is an error reading the CSV file.
      *
      * @param filePath the path to the CSV file to import
-     * @return a list of {@code ProductDTO} representing the imported products
-     * @throws BusinessException if an IOException occurs during CSV file processing
+     * @throws CsvImportException if an IOException occurs during CSV file processing
      */
-    public List<ProductDTO> importCsv(Path filePath) {
+    public void importCsv(Path filePath) {
         String filename = filePath.getFileName().toString();
         String storeName = capitalize(filename.split("_")[0]);
 
@@ -57,46 +53,39 @@ public class CsvImportService {
                     return storeRepository.save(s);
                 });
 
-        List<ProductDTO> productDTOList = new ArrayList<>();
-
         try (Reader reader = Files.newBufferedReader(filePath)) {
-            CSVParser csvParser = CSVFormat.DEFAULT
-                    .withFirstRecordAsHeader()
-                    .withIgnoreHeaderCase()
-                    .withTrim()
-                    .parse(reader);
+            CSVFormat format = CSVFormat.DEFAULT.builder()
+                    .setHeader()
+                    .setSkipHeaderRecord(true)
+                    .setIgnoreHeaderCase(true)
+                    .setTrim(true)
+                    .build();
+
+            CSVParser csvParser = format.parse(reader);
 
             for (CSVRecord csvRecord : csvParser) {
-                Product product = new Product();
-                product.setProduct_id(csvRecord.get("product_id"));
-                product.setProduct_name(csvRecord.get("product_name"));
-                product.setProduct_category(csvRecord.get("product_category"));
-                product.setBrand(csvRecord.get("brand"));
-                product.setPackage_quantity(new BigDecimal(csvRecord.get("package_quantity")));
-                product.setPackage_unit(csvRecord.get("package_unit"));
-                product.setPrice(new BigDecimal(csvRecord.get("price")));
-                product.setCurrency(Currency.valueOf(csvRecord.get("currency")));
-                product.setStore(store);
+                Product product = mapCsvRecordToProduct(csvRecord, store);
 
                 productRepository.save(product);
-
-                ProductDTO dto = new ProductDTO();
-                dto.setProduct_id(product.getProduct_id());
-                dto.setProduct_name(product.getProduct_name());
-                dto.setProduct_category(product.getProduct_category());
-                dto.setBrand(product.getBrand());
-                dto.setPackage_quantity(product.getPackage_quantity());
-                dto.setPackage_unit(product.getPackage_unit());
-                dto.setPrice(product.getPrice());
-                dto.setCurrency(product.getCurrency());
-
-                productDTOList.add(dto);
             }
         } catch (IOException e) {
-            throw new BusinessException("Error importing CSV data: " + e.getMessage());
+            throw new CsvImportException("Error importing CSV data: " + e.getMessage());
         }
 
-        return productDTOList;
+    }
+
+    private Product mapCsvRecordToProduct(CSVRecord csvRecord, Store store) {
+        Product product = new Product();
+        product.setProduct_id(csvRecord.get("product_id"));
+        product.setProduct_name(csvRecord.get("product_name"));
+        product.setProduct_category(csvRecord.get("product_category"));
+        product.setBrand(csvRecord.get("brand"));
+        product.setPackage_quantity(new BigDecimal(csvRecord.get("package_quantity")));
+        product.setPackage_unit(csvRecord.get("package_unit"));
+        product.setPrice(new BigDecimal(csvRecord.get("price")));
+        product.setCurrency(Currency.valueOf(csvRecord.get("currency")));
+        product.setStore(store);
+        return product;
     }
 
     /**
