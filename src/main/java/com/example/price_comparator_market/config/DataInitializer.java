@@ -19,7 +19,10 @@ public class DataInitializer implements CommandLineRunner {
        List<String> csvFiles = List.of(
                "lidl_2025-05-08.csv",
                "kaufland_2025-05-08.csv",
-               "profi_2025-05-08.csv"
+               "profi_2025-05-08.csv",
+               "kaufland_discounts_2025-05-01.csv",
+               "profi_discounts_2025-05-01.csv",
+               "lidl_discounts_2025-05-01.csv"
        );
        for (String fileName : csvFiles) {
            Path path = Path.of("src/main/resources/csv/" + fileName);
