@@ -64,6 +64,14 @@ public class CsvImportService {
             CSVParser csvParser = format.parse(reader);
 
             for (CSVRecord csvRecord : csvParser) {
+                String productId = csvRecord.get("product_id");
+
+                boolean exists = productRepository.findByProductIdAndStore(productId, store).isPresent();
+
+                if(exists){
+                    continue;
+                }
+
                 Product product = mapCsvRecordToProduct(csvRecord, store);
 
                 productRepository.save(product);
@@ -76,7 +84,7 @@ public class CsvImportService {
 
     private Product mapCsvRecordToProduct(CSVRecord csvRecord, Store store) {
         Product product = new Product();
-        product.setProduct_id(csvRecord.get("product_id"));
+        product.setProductId(csvRecord.get("product_id"));
         product.setProduct_name(csvRecord.get("product_name"));
         product.setProduct_category(csvRecord.get("product_category"));
         product.setBrand(csvRecord.get("brand"));
