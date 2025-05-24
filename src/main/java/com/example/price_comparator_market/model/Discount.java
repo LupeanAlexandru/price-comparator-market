@@ -21,12 +21,13 @@ public class Discount {
     @Column(name = "product_id")
     private String productId;
 
-    private String product_name;
+    @Column(name = "product_name")
+    private String productName;
 
     private String brand;
 
-    private BigDecimal package_quantity;
-
+    private BigDecimal packageQuantity;
+// TODO: camelcase
     private String package_unit;
 
     private String product_category;

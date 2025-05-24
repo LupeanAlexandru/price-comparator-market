@@ -48,7 +48,7 @@ public class ProductService {
     private ProductDTO mapToDTO(Product product) {
         ProductDTO dto = new ProductDTO();
         dto.setProduct_id(product.getProductId());
-        dto.setProduct_name(product.getProduct_name());
+        dto.setProduct_name(product.getProductName());
         dto.setProduct_category(product.getProduct_category());
         dto.setBrand(product.getBrand());
         dto.setPackage_quantity(product.getPackage_quantity());
