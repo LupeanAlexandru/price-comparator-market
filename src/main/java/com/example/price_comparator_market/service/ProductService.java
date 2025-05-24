@@ -49,10 +49,10 @@ public class ProductService {
         ProductDTO dto = new ProductDTO();
         dto.setProduct_id(product.getProductId());
         dto.setProduct_name(product.getProductName());
-        dto.setProduct_category(product.getProduct_category());
+        dto.setProduct_category(product.getProductCategory());
         dto.setBrand(product.getBrand());
-        dto.setPackage_quantity(product.getPackage_quantity());
-        dto.setPackage_unit(product.getPackage_unit());
+        dto.setPackage_quantity(product.getPackageQuantity());
+        dto.setPackage_unit(product.getPackageUnit());
         dto.setPrice(product.getPrice());
         dto.setCurrency(product.getCurrency());
         return dto;

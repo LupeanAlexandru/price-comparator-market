@@ -46,11 +46,11 @@ public class DiscountService {
         dto.setProduct_name(discount.getProductName());
         dto.setBrand(discount.getBrand());
         dto.setPackage_quantity(discount.getPackageQuantity());
-        dto.setPackage_unit(discount.getPackage_unit());
-        dto.setProduct_category(discount.getProduct_category());
+        dto.setPackage_unit(discount.getPackageUnit());
+        dto.setProduct_category(discount.getProductCategory());
         dto.setFrom_date(discount.getFromDate());
         dto.setTo_date(discount.getToDate());
-        dto.setPercentage_of_discount(discount.getPercentage_of_discount());
+        dto.setPercentage_of_discount(discount.getPercentageOfDiscount());
         return dto;
     }
 }

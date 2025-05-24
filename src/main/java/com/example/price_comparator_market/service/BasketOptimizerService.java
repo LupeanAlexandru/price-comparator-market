@@ -21,6 +21,18 @@ public class BasketOptimizerService {
     private final ProductRepository productRepository;
     private final DiscountRepository discountRepository;
 
+    /**
+     * Optimizes a shopping basket by finding the lowest available price for each requested product,
+     * taking into account both regular prices and currently active discounts across all stores.
+     *
+     * <p>For each product name in the {@link BasketRequestDTO}, the method determines the store offering
+     * the best price and groups the results by store. If a product is not found in any store, it is included
+     * in a separate list of missing items.</p>
+     *
+     * @param request the basket request containing a list of product names
+     * @return a {@link BasketResponseDTO} containing a mapping of store names to the list of
+     *         found products with their lowest prices, and a list of product names that could not be found
+     */
     public BasketResponseDTO optimizeBasket(BasketRequestDTO request) {
         Map<String, List<ProductInStoreDTO>> storeBaskets = new HashMap<>();
         List<String> notFound = new ArrayList<>();
@@ -36,7 +48,7 @@ public class BasketOptimizerService {
                 Optional<Product> productOpt = productRepository.findByProductIdAndStore(discount.getProductId(), discount.getStore());
                 if (productOpt.isPresent()) {
                     BigDecimal price = productOpt.get().getPrice();
-                    BigDecimal discountedPrice = price.subtract(price.multiply(discount.getPercentage_of_discount()).divide(BigDecimal.valueOf(100)));
+                    BigDecimal discountedPrice = price.subtract(price.multiply(discount.getPercentageOfDiscount()).divide(BigDecimal.valueOf(100)));
                     storeToDiscountedPrice.put(discount.getStore(), discountedPrice);
                 }
             }

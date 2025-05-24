@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,13 +20,13 @@ public class Product {
 
     private String productName;
 
-    private String product_category;
+    private String productCategory;
 
     private String brand;
 
-    private BigDecimal package_quantity;
+    private BigDecimal packageQuantity;
 
-    private String package_unit;
+    private String packageUnit;
 
     private BigDecimal price;
 
