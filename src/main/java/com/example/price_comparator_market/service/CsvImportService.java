@@ -108,10 +108,10 @@ public class CsvImportService {
         Product product = new Product();
         product.setProductId(csvRecord.get("product_id"));
         product.setProductName(csvRecord.get("product_name"));
-        product.setProduct_category(csvRecord.get("product_category"));
+        product.setProductCategory(csvRecord.get("product_category"));
         product.setBrand(csvRecord.get("brand"));
-        product.setPackage_quantity(new BigDecimal(csvRecord.get("package_quantity")));
-        product.setPackage_unit(csvRecord.get("package_unit"));
+        product.setPackageQuantity(new BigDecimal(csvRecord.get("package_quantity")));
+        product.setPackageUnit(csvRecord.get("package_unit"));
         product.setPrice(new BigDecimal(csvRecord.get("price")));
         product.setCurrency(Currency.valueOf(csvRecord.get("currency")));
         product.setStore(store);
@@ -124,11 +124,11 @@ public class CsvImportService {
         discount.setProductName(csvRecord.get("product_name"));
         discount.setBrand(csvRecord.get("brand"));
         discount.setPackageQuantity(new BigDecimal(csvRecord.get("package_quantity")));
-        discount.setPackage_unit(csvRecord.get("package_unit"));
-        discount.setProduct_category(csvRecord.get("product_category"));
+        discount.setPackageUnit(csvRecord.get("package_unit"));
+        discount.setProductCategory(csvRecord.get("product_category"));
         discount.setFromDate(LocalDate.parse(csvRecord.get("from_date")));
         discount.setToDate(LocalDate.parse(csvRecord.get("to_date")));
-        discount.setPercentage_of_discount(new BigDecimal(csvRecord.get("percentage_of_discount")));
+        discount.setPercentageOfDiscount(new BigDecimal(csvRecord.get("percentage_of_discount")));
         discount.setStore(store);
         return discount;
     }

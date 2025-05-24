@@ -40,7 +40,6 @@ public class StoreService {
      * @return the {@code StoreDTO} corresponding to the given ID
      * @throws StoreNotFoundException if no store is found with the specified ID
      */
-
     public StoreDTO getStoreById(Long id) {
         Store store = storeRepository.findById(id)
                 .orElseThrow(() -> new StoreNotFoundException("Store not found with id: " + id));

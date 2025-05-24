@@ -12,33 +12,28 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "discounts")
 public class Discount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "product_id")
     private String productId;
 
-    @Column(name = "product_name")
     private String productName;
 
     private String brand;
 
     private BigDecimal packageQuantity;
-// TODO: camelcase
-    private String package_unit;
 
-    private String product_category;
+    private String packageUnit;
 
-    @Column(name = "from_date")
+    private String productCategory;
+
     private LocalDate fromDate;
 
-    @Column(name = "to_date")
     private LocalDate toDate;
 
-    private BigDecimal percentage_of_discount;
+    private BigDecimal percentageOfDiscount;
 
     @ManyToOne(optional = false)
     private Store store;
