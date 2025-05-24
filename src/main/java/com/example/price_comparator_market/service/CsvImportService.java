@@ -107,7 +107,7 @@ public class CsvImportService {
     private Product mapCsvRecordToProduct(CSVRecord csvRecord, Store store) {
         Product product = new Product();
         product.setProductId(csvRecord.get("product_id"));
-        product.setProduct_name(csvRecord.get("product_name"));
+        product.setProductName(csvRecord.get("product_name"));
         product.setProduct_category(csvRecord.get("product_category"));
         product.setBrand(csvRecord.get("brand"));
         product.setPackage_quantity(new BigDecimal(csvRecord.get("package_quantity")));
@@ -121,9 +121,9 @@ public class CsvImportService {
     private Discount mapCsvRecordToDiscount(CSVRecord csvRecord, Store store) {
         Discount discount = new Discount();
         discount.setProductId(csvRecord.get("product_id"));
-        discount.setProduct_name(csvRecord.get("product_name"));
+        discount.setProductName(csvRecord.get("product_name"));
         discount.setBrand(csvRecord.get("brand"));
-        discount.setPackage_quantity(new BigDecimal(csvRecord.get("package_quantity")));
+        discount.setPackageQuantity(new BigDecimal(csvRecord.get("package_quantity")));
         discount.setPackage_unit(csvRecord.get("package_unit"));
         discount.setProduct_category(csvRecord.get("product_category"));
         discount.setFromDate(LocalDate.parse(csvRecord.get("from_date")));
