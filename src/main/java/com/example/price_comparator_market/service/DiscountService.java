@@ -2,6 +2,7 @@ package com.example.price_comparator_market.service;
 
 import com.example.price_comparator_market.dto.BestDiscountDTO;
 import com.example.price_comparator_market.dto.DiscountDTO;
+import com.example.price_comparator_market.dto.NewDiscountDTO;
 import com.example.price_comparator_market.exception.DiscountNotFoundException;
 import com.example.price_comparator_market.model.Discount;
 import com.example.price_comparator_market.model.Product;
@@ -82,6 +83,36 @@ public class DiscountService {
                     discount.getStore().getName()
             );
         }).filter(dto -> dto.getOriginalPrice() != null && dto.getDiscountedPrice() != null).sorted(Comparator.comparing(BestDiscountDTO::getPercentageOfDiscount).reversed()).collect(Collectors.toList());
+    }
+
+    /**
+     * Retrieves a list of newly added discounts from the past day.
+     * <p>
+     * A discount is considered "new" if its {@code fromDate} is greater than or equal to yesterday
+     * (added within the last 24 hours). Each returned discount includes product name, brand,
+     * price, discount percentage, and store name.
+     * <p>
+     *
+     * @return a list of {@link NewDiscountDTO} objects representing newly added discounts
+     */
+    public List<NewDiscountDTO> getNewDiscounts() {
+        LocalDate since = LocalDate.now().minusDays(1);
+        List<Discount> newDiscounts = discountRepository.findByFromDateGreaterThanEqual(since);
+
+        return newDiscounts.stream()
+                .map(discount -> {
+                    Optional<Product> productOpt = productRepository.findByProductIdAndStore(discount.getProductId(), discount.getStore());
+                    BigDecimal originalPrice = productOpt.map(Product::getPrice).orElse(null);
+                    return new NewDiscountDTO(
+                            discount.getProductName(),
+                            discount.getBrand(),
+                            originalPrice,
+                            discount.getPercentageOfDiscount(),
+                            discount.getStore().getName()
+                    );
+                })
+                .filter(dto -> dto.getPrice() != null)
+                .collect(Collectors.toList());
     }
 
     private DiscountDTO mapToDTO(Discount discount) {

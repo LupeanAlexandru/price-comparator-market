@@ -2,6 +2,7 @@ package com.example.price_comparator_market.controller;
 
 import com.example.price_comparator_market.dto.BestDiscountDTO;
 import com.example.price_comparator_market.dto.DiscountDTO;
+import com.example.price_comparator_market.dto.NewDiscountDTO;
 import com.example.price_comparator_market.service.DiscountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -62,5 +63,20 @@ public class DiscountController {
             date = LocalDate.now();
         }
         return ResponseEntity.ok(discountService.getBestDiscounts(date));
+    }
+
+    /**
+     * Retrieves a list of newly added discounts.
+     * <p>
+     * A "new" discount is typically defined based on a specific business rule, such as being added
+     * within a recent time window (e.g., the past 24 hours or today).
+     * The criteria for what constitutes a "new" discount should be defined in the service layer.
+     *
+     * @return a {@link ResponseEntity} containing a list of {@link NewDiscountDTO} objects
+     *         representing the newly added discounts
+     */
+    @GetMapping("/new")
+    public ResponseEntity<List<NewDiscountDTO>> getNewDiscounts() {
+        return ResponseEntity.ok(discountService.getNewDiscounts());
     }
 }
