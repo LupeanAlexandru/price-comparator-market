@@ -117,15 +117,15 @@ public class DiscountService {
 
     private DiscountDTO mapToDTO(Discount discount) {
         DiscountDTO dto = new DiscountDTO();
-        dto.setProduct_id(discount.getProductId());
-        dto.setProduct_name(discount.getProductName());
+        dto.setProductId(discount.getProductId());
+        dto.setProductName(discount.getProductName());
         dto.setBrand(discount.getBrand());
-        dto.setPackage_quantity(discount.getPackageQuantity());
-        dto.setPackage_unit(discount.getPackageUnit());
-        dto.setProduct_category(discount.getProductCategory());
-        dto.setFrom_date(discount.getFromDate());
-        dto.setTo_date(discount.getToDate());
-        dto.setPercentage_of_discount(discount.getPercentageOfDiscount());
+        dto.setPackageQuantity(discount.getPackageQuantity());
+        dto.setPackageUnit(discount.getPackageUnit());
+        dto.setProductCategory(discount.getProductCategory());
+        dto.setFromDate(discount.getFromDate());
+        dto.setToDate(discount.getToDate());
+        dto.setPercentageOfDiscount(discount.getPercentageOfDiscount());
         return dto;
     }
 }
