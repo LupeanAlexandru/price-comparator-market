@@ -21,6 +21,23 @@ public class PriceHistoryService {
     private final ProductRepository productRepository;
     private final DiscountRepository discountRepository;
 
+    /**
+     * Retrieves the historical pricing data for a given product, including the effects
+     * of any applicable discounts over time. The result includes time intervals with
+     * base price, discounted price, discount percentage, and store name.
+     *
+     * <p>The method filters products by optional parameters such as store name, brand,
+     * and category. For each matching product, it retrieves related discount intervals,
+     * merges overlapping periods, and fills in non-discounted gaps to build a complete
+     * pricing timeline.</p>
+     *
+     * @param productName the name of the product to search for
+     * @param storeName   optional filter for the store name
+     * @param brand       optional filter for the brand
+     * @param category    optional filter for the product category
+     * @return a {@link PriceHistoryResponseDTO} containing product metadata and a list
+     *         of {@link PriceHistoryDTO} intervals, or {@code null} if no products match
+     */
     public PriceHistoryResponseDTO getPriceHistory(
             String productName,
             Optional<String> storeName,
@@ -115,11 +132,24 @@ public class PriceHistoryService {
         return dto;
     }
 
+    /**
+     * Represents a time interval during which a specific discount percentage is valid.
+     *
+     * <p>This class is used internally to model the duration and value of a discount,
+     * with a start date, end date, and the associated discount percentage.</p>
+     */
     private static class Interval {
         LocalDate fromDate;
         LocalDate toDate;
         BigDecimal discountPercentage;
 
+        /**
+         * Constructs an {@code Interval} with the specified start and end dates, and discount percentage.
+         *
+         * @param from the start date of the interval (inclusive)
+         * @param to the end date of the interval (inclusive)
+         * @param discount the discount percentage that applies during the interval
+         */
         Interval(LocalDate from, LocalDate to, BigDecimal discount) {
             this.fromDate = from;
             this.toDate = to;
@@ -127,6 +157,18 @@ public class PriceHistoryService {
         }
     }
 
+    /**
+     * Merges overlapping or adjacent discount intervals by computing the maximum discount
+     * applicable for each day, then combining consecutive days that share the same discount
+     * into a single continuous interval.
+     *
+     * <p>This method is used to normalize a list of potentially overlapping discount periods
+     * into a streamlined set of non-overlapping intervals, each representing a continuous
+     * period with a consistent maximum discount.</p>
+     *
+     * @param intervals the list of original {@link Interval} objects, potentially overlapping
+     * @return a list of merged {@link Interval} objects with no overlaps and consistent discounts
+     */
     private List<Interval> mergeIntervals(List<Interval> intervals) {
         if (intervals.isEmpty()) return Collections.emptyList();
 
@@ -164,6 +206,18 @@ public class PriceHistoryService {
         return merged;
     }
 
+    /**
+     * Calculates the maximum discount percentage applicable on a given day by
+     * checking all intervals that include that day.
+     *
+     * <p>This method filters the provided intervals to find those that cover the specified date,
+     * then returns the highest discount percentage among them. If no intervals apply,
+     * it returns {@code BigDecimal.ZERO}.</p>
+     *
+     * @param day the specific {@link LocalDate} for which to determine the maximum discount
+     * @param intervals the list of {@link Interval} objects to search through
+     * @return the highest discount percentage found for the given day, or {@code BigDecimal.ZERO} if none apply
+     */
     private BigDecimal getMaxDiscountForDay(LocalDate day, List<Interval> intervals) {
         return intervals.stream()
                 .filter(i -> (!day.isBefore(i.fromDate) && !day.isAfter(i.toDate)))
