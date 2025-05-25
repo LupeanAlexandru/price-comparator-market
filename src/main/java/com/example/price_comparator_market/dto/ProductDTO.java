@@ -7,12 +7,12 @@ import java.math.BigDecimal;
 
 @Data
 public class ProductDTO {
-    private String product_id;
-    private String product_name;
-    private String product_category;
+    private String productId;
+    private String productName;
+    private String productCategory;
     private String brand;
-    private BigDecimal package_quantity;
-    private String package_unit;
+    private BigDecimal packageQuantity;
+    private String packageUnit;
     private BigDecimal price;
     private Currency currency;
 }
