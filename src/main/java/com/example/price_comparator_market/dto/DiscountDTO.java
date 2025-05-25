@@ -7,13 +7,13 @@ import java.time.LocalDate;
 
 @Data
 public class DiscountDTO {
-    private String product_id;
-    private String product_name;
+    private String productId;
+    private String productName;
     private String brand;
-    private BigDecimal package_quantity;
-    private String package_unit;
-    private String product_category;
-    private LocalDate from_date;
-    private LocalDate to_date;
-    private BigDecimal percentage_of_discount;
+    private BigDecimal packageQuantity;
+    private String packageUnit;
+    private String productCategory;
+    private LocalDate fromDate;
+    private LocalDate toDate;
+    private BigDecimal percentageOfDiscount;
 }
